@@ -1,6 +1,22 @@
 <?php
 include 'config.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$is_admin = ($_SESSION['role'] == 'admin');
+
+if ($is_admin) {
+    $stmt = $pdo->query("SELECT * FROM images");
+} else {
+    $stmt = $pdo->query("SELECT * FROM images WHERE inappropriate = 0");
+}
+
+$images = $stmt->fetchAll();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
